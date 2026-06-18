@@ -181,18 +181,6 @@ El botón **Descargar plantilla** genera un XLSX de ejemplo con hoja `hogares` y
 
 ---
 
-## Tests de paridad Python ↔ JavaScript
-
-Al cargar la app, la consola del navegador muestra el resultado de 60 tests
-(10 hogares × 6 perfiles) comparando scores JS con scores Python usando `init_weights`:
-
-```
-Paridad Python ↔ JS: 60/60 tests OK
-✓ Todos los scores coinciden con Python (tolerancia 0.001)
-```
-
----
-
 ## Limitaciones del PoC
 
 - Dataset sintético de 10 hogares — no representativo estadísticamente.
