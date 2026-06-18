@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOCIAREM · Perfiles de vulnerabilidad · Piloto Messina</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ────── Pantalla de login ────── -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">SOCIAREM</div>
+    <div class="login-sub">Piloto Messina · PoC de vulnerabilidad energética</div>
+    <label class="login-label" for="login-username">Evaluador</label>
+    <input type="text" id="login-username" class="login-input"
+           placeholder="Nombre o código de evaluador"
+           onkeydown="if(event.key==='Enter')enterApp()">
+    <button class="btn btn-primary btn-lg login-btn" onclick="enterApp()">Entrar →</button>
+  </div>
+</div>
+
+<!-- ────── Aplicación principal ────── -->
+<div id="main-screen" hidden>
+
+  <!-- Topbar -->
+  <div id="topbar">
+    <span class="topbar-label">Perfil activo:</span>
+    <div id="profile-buttons">
+      <!-- Generado por renderTopbar() -->
+    </div>
+    <div class="topbar-actions">
+      <div class="topbar-user-info">
+        <span class="topbar-user-label">Usuario:</span>
+        <span id="topbar-user"></span>
+        <button class="btn btn-secondary btn-sm" style="padding:2px 8px;font-size:0.72rem" onclick="changeUser()">Cambiar</button>
+      </div>
+      <label class="ref-toggle" id="ref-toggle-wrap">
+        <input type="checkbox" id="ref-toggle-check" onchange="toggleRefLabels()">
+        Mostrar etiquetas de referencia
+      </label>
+    </div>
+  </div>
+
+  <!-- Disposición principal: sidebar + área de trabajo -->
+  <div id="app-layout">
+
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-logo">SOCIAREM</div>
+        <div class="sidebar-sub">Piloto Messina · PoC</div>
+        <div id="sidebar-profile-info"></div>
+      </div>
+      <div class="data-panel" id="data-panel">
+        <!-- Generado por renderDataPanel() -->
+      </div>
+      <div class="sidebar-search">
+        <input type="text" id="search-input" placeholder="Buscar hogares…" oninput="onSearch(this.value)">
+      </div>
+      <div class="sidebar-search-hint">ID o nombre del hogar</div>
+      <div class="sidebar-list" id="sidebar-list">
+        <!-- Generado por renderSidebar() -->
+      </div>
+      <div id="sidebar-bottom">
+        <!-- Generado por renderSidebarBottom() -->
+      </div>
+    </aside>
+
+    <!-- Área principal -->
+    <main id="main-area">
+      <div id="household-header">
+        <!-- Generado por renderHouseholdHeader() -->
+      </div>
+      <div id="content-scroll">
+        <div id="content-area">
+          <!-- Generado por renderContentArea() -->
+        </div>
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<!-- Tooltip global -->
+<div id="tooltip" class="tooltip" hidden></div>
+
+<!-- Inputs ocultos -->
+<input type="file" id="xlsx-input"           accept=".xlsx,.xls" hidden onchange="handleXlsxUpload(event)">
+<input type="file" id="import-weights-input" accept=".json"      hidden onchange="importWeightsJson(event)">
+
+<!-- Scripts: SheetJS, luego datos, luego app -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
