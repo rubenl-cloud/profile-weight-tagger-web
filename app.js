@@ -67,16 +67,38 @@ function showLoginScreen() {
   if (inp) inp.focus();
 }
 
+function showLoginError(msg) {
+  const el = document.getElementById('login-error');
+  if (!el) return;
+  el.textContent = msg;
+  el.removeAttribute('hidden');
+}
+
+function hideLoginError() {
+  const el = document.getElementById('login-error');
+  if (el) el.setAttribute('hidden', '');
+}
+
 function enterApp() {
   const inp      = document.getElementById('login-username');
+  const passInp  = document.getElementById('login-password');
   const username = inp ? inp.value.trim() : '';
+  const password = passInp ? passInp.value : '';
+
   if (!username) {
-    showNotification('Introduce un nombre de evaluador');
+    showLoginError('Introduce un nombre de evaluador.');
     if (inp) inp.focus();
     return;
   }
+  if (password !== APP_PASSWORD) {
+    showLoginError('Contraseña incorrecta.');
+    if (passInp) { passInp.focus(); passInp.select(); }
+    return;
+  }
+  hideLoginError();
   state.username = username;
   localStorage.setItem('sociarem_username', username);
+  if (passInp) passInp.value = '';
   document.getElementById('login-screen').setAttribute('hidden', '');
   document.getElementById('main-screen').removeAttribute('hidden');
   buildMainScreen();
@@ -86,8 +108,12 @@ function enterApp() {
 function changeUser() {
   document.getElementById('main-screen').setAttribute('hidden', '');
   document.getElementById('login-screen').removeAttribute('hidden');
+  hideLoginError();
   const inp = document.getElementById('login-username');
-  if (inp) { inp.value = state.username || localStorage.getItem('sociarem_username') || ''; inp.focus(); }
+  const passInp = document.getElementById('login-password');
+  if (inp) { inp.value = state.username || localStorage.getItem('sociarem_username') || ''; }
+  if (passInp) passInp.value = '';
+  if (passInp) passInp.focus(); else if (inp) inp.focus();
 }
 
 // ─── Construcción principal ───────────────────────────────────────────────────
@@ -211,7 +237,9 @@ function renderSidebarBottom() {
     ` : `
       ${state.hasGT ? `
         <button class="btn btn-secondary btn-sm btn-full mb-1" onclick="autoAssign(true)">▷ Auto-demo</button>
-        <button class="btn btn-secondary btn-sm btn-full mb-1" onclick="autoAssign(false)">⚡ Asignar todo</button>
+        <button class="btn btn-secondary btn-sm btn-full mb-1"
+                title="Copia las etiquetas de referencia a los 6 perfiles, para los 10 hogares"
+                onclick="autoAssignAllProfiles()">⚡ Asignar todo (6 perfiles)</button>
       ` : ''}
       ${canOpt
         ? `<button class="btn btn-accent2 btn-sm btn-full" onclick="runOptimization()">⟳ Optimizar pesos</button>`
@@ -385,6 +413,20 @@ function autoAssign(animated) {
   }
 }
 
+// Asigna las etiquetas de referencia a TODOS los perfiles (P1–P6), no solo
+// al perfil activo. Pensado para preparar la demo de un solo golpe.
+function autoAssignAllProfiles() {
+  if (!state.hasGT) { alert('El dataset actual no tiene etiquetas de referencia.'); return; }
+  if (state._autoTimer) { clearTimeout(state._autoTimer); state._autoTimer = null; }
+  for (const pid of Object.keys(state.profiles)) {
+    for (const hh of HOUSEHOLDS) {
+      state.profiles[pid].expertLabels[hh.id] = hh.gt[pid];
+    }
+  }
+  renderAll();
+  showNotification('Etiquetas de referencia asignadas en los 6 perfiles.');
+}
+
 function _autoStep(i) {
   if (i >= HOUSEHOLDS.length) { renderAll(); return; }
   const hh = HOUSEHOLDS[i];
@@ -516,7 +558,13 @@ function renderPhase2(area) {
       <div class="phase2-right">
         <div class="ct-header">
           <span style="color:${color};font-weight:700;font-size:0.82rem">${profDef.name}</span>
-          <span class="text-muted" style="font-size:0.68rem;margin-left:6px">Hogar · Score · Nivel · Experto · Error</span>
+        </div>
+        <div class="compact-table-header">
+          <span>Hogar</span>
+          <span>Score</span>
+          <span>Nivel</span>
+          <span>Experto</span>
+          <span>Error</span>
         </div>
         <div class="compact-table" id="compact-table">${tableRows}</div>
       </div>

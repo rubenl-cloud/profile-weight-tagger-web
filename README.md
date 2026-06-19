@@ -34,7 +34,7 @@ Funciona en Chrome, Firefox y Edge modernos.
 ## Flujo de la demo
 
 ### Login
-Pantalla inicial con campo de nombre de evaluador (sin contraseña). El nombre se guarda en `localStorage` y se muestra en la topbar. El botón «Cambiar» vuelve al login.
+Pantalla inicial con campo de nombre de evaluador y campo de contraseña. El nombre se guarda en `localStorage` y se muestra en la topbar. La contraseña es única y compartida (constante `APP_PASSWORD` en `data.js`); no es un mecanismo de seguridad real, solo evita que alguien abra la app sin saberla durante una demo en directo. El botón «Cambiar» vuelve al login.
 
 ### Fase 1 — Etiquetado experto ordinal
 El experto evalúa cada hogar para el perfil activo.
@@ -44,8 +44,8 @@ El experto evalúa cada hogar para el perfil activo.
 - Tarjetas de indicadores **neutrales** (sin rojo/verde para no sesgar al experto).
 - **5 botones ordinales**: `0 · No | 1 · Baja | 2 · Media | 3 · Alta | 4 · Muy alta`
 - Auto-avance al siguiente hogar al asignar etiqueta nueva.
-- Botón **Auto-demo** para animación paso a paso.
-- Botón **Asignar todo** para rellenar instantáneamente.
+- Botón **Auto-demo** para animación paso a paso (perfil activo).
+- Botón **Asignar todo (6 perfiles)** para rellenar instantáneamente las etiquetas de referencia en los 10 hogares y en los 6 perfiles a la vez.
 - Con ≥ 3 etiquetas aparece el botón **Optimizar pesos**.
 
 ### Fase 2 — Scores, pesos y métricas (layout 2 columnas)
@@ -58,7 +58,7 @@ El experto evalúa cada hogar para el perfil activo.
 - Botones de exportación JSON / CSV.
 
 **Columna derecha:**
-- Tabla compacta de los 10 hogares con: Hogar · Score · Nivel · Experto · Error ordinal.
+- Tabla compacta de los 10 hogares, con cabecera de columnas (Hogar · Score · Nivel · Experto · Error).
 
 ---
 
@@ -150,8 +150,8 @@ Los pesos optimizados (o modificados manualmente con sliders) pueden guardarse c
 Las etiquetas de referencia (`gt`, valores 0-4) están ocultas por defecto para no sesgar al experto.
 Para verlas, activar el toggle **Mostrar etiquetas de referencia** en la barra superior.
 
-El botón **Auto-demo** / **Asignar todo** copia explícitamente las etiquetas de referencia
-a las etiquetas experto, a petición del usuario, para preparar la demo.
+El botón **Auto-demo** copia las etiquetas de referencia a las etiquetas experto del perfil activo, a petición del usuario, para preparar la demo paso a paso.
+El botón **Asignar todo (6 perfiles)** hace lo mismo de golpe, pero para los 6 perfiles simultáneamente.
 
 ---
 
@@ -181,10 +181,14 @@ El botón **Descargar plantilla** genera un XLSX de ejemplo con hoja `hogares` y
 
 ---
 
+## Financiación y logos
+
+El footer inferior muestra los logos de financiación (Unión Europea / Horizon Europe y SERI) y, al pasar el cursor por el icono ⓘ, el texto oficial de reconocimiento de financiación bajo el Grant Agreement Nº 101235482. Los logos y el icono de SOCIAREM se cargan directamente desde `sociarem.eu`; si la máquina donde se hace la demo no tiene conexión a internet, no se mostrarán (se puede sustituir por copias locales en `assets/` si hace falta).
+
 ## Limitaciones del PoC
 
 - Dataset sintético de 10 hogares — no representativo estadísticamente.
 - La optimización JS (descenso de gradiente) no replica scipy SLSQP; divergencia en pesos esperada.
-- El login es solo por nombre (sin contraseña ni backend).
+- El login pide nombre y contraseña, pero la contraseña es una constante en texto plano (`APP_PASSWORD` en `data.js`); es una barrera para demos en directo, no una medida de seguridad real.
 - Las versiones de pesos se guardan en `localStorage`; se pierden si se limpia el navegador.
 - Los indicadores cualitativos (I7, I9, I10…) usan escalas ordinales simplificadas.

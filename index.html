@@ -11,13 +11,20 @@
 <!-- ────── Pantalla de login ────── -->
 <div id="login-screen">
   <div class="login-card">
-    <div class="login-logo">HOLA JON</div>
+    <img class="login-logo-img" alt="SOCIAREM"
+         src="https://sociarem.eu/_next/image?url=%2Fassets%2Fsociarem-icon.png&amp;w=1080&amp;q=75">
+    <div class="login-logo">SOCIAREM</div>
     <div class="login-sub">Piloto Messina · PoC de vulnerabilidad energética</div>
     <label class="login-label" for="login-username">Evaluador</label>
     <input type="text" id="login-username" class="login-input"
            placeholder="Nombre o código de evaluador"
+           onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()">
+    <label class="login-label" for="login-password">Contraseña</label>
+    <input type="password" id="login-password" class="login-input"
+           placeholder="Contraseña de acceso"
            onkeydown="if(event.key==='Enter')enterApp()">
     <button class="btn btn-primary btn-lg login-btn" onclick="enterApp()">Entrar →</button>
+    <div id="login-error" class="login-error" hidden></div>
   </div>
 </div>
 
@@ -49,7 +56,11 @@
     <!-- Sidebar -->
     <aside id="sidebar">
       <div class="sidebar-top">
-        <div class="sidebar-logo">SOCIAREM</div>
+        <div class="sidebar-logo-row">
+          <img class="sidebar-logo-img" alt="SOCIAREM"
+               src="https://sociarem.eu/_next/image?url=%2Fassets%2Fsociarem-icon.png&amp;w=1080&amp;q=75">
+          <div class="sidebar-logo">SOCIAREM</div>
+        </div>
         <div class="sidebar-sub">Piloto Messina · PoC</div>
         <div id="sidebar-profile-info"></div>
       </div>
@@ -81,6 +92,24 @@
     </main>
 
   </div>
+
+  <!-- Footer: financiación -->
+  <footer id="app-footer">
+    <div class="footer-logos">
+      <img class="footer-logo" alt="Co-funded by the European Union"
+           src="https://sociarem.eu/_next/image?url=%2Fassets%2Feu-funded-white.png&amp;w=640&amp;q=75">
+      <img class="footer-logo" alt="Swiss Secretariat for Education, Research and Innovation"
+           src="https://sociarem.eu/_next/image?url=%2Fassets%2Fseri-white.png&amp;w=640&amp;q=75">
+    </div>
+    <div class="footer-text">
+      SOCIAREM · Horizon Europe, Grant Agreement Nº 101235482
+      <button class="info-btn footer-info-btn"
+              data-tip="This project has received funding from the European Union's Horizon Europe research and innovation programme under Grant Agreement for Project Nº 101235482 and the Swiss Secretariat for Education, Research, and Innovation (SERI) under contract Nº 25.00325. Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Climate, Infrastructure and Environment Executive Agency (CINEA) as granting authority. Neither the European Union nor the granting authority can be held responsible for them."
+              onmouseenter="showTip(this,this.dataset.tip)"
+              onmouseleave="hideTip()">ⓘ</button>
+    </div>
+  </footer>
+
 </div>
 
 <!-- Tooltip global -->

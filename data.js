@@ -1,5 +1,12 @@
 'use strict';
 
+// ─── Acceso ───────────────────────────────────────────────────────────────────
+// Contraseña única compartida para entrar a la demo. No es un mecanismo de
+// seguridad real (es texto plano visible en el código fuente): solo evita que
+// alguien abra la app sin saberla durante una demo en directo. Cámbiala aquí
+// cuando quieras.
+const APP_PASSWORD = 'sociarem2026';
+
 // ─── Utilidades ───────────────────────────────────────────────────────────────
 
 function clamp(x) { return Math.max(0.0, Math.min(1.0, x)); }
